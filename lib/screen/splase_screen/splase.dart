@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/screen/splase_screen/getting_started.dart';
+import 'package:food_app/utility/constants.dart';
 
 class SplaseScreen extends StatefulWidget {
   const SplaseScreen({Key? key}) : super(key: key);
@@ -26,9 +27,8 @@ class _SplaseScreenState extends State<SplaseScreen> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/images/food.png'),
+              Image.asset(Constants.imageAsset('food.png')),
               SizedBox(
                 height: 8,
               ),
