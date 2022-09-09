@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/screen/splase_screen/getting_started.dart';
 import 'package:food_app/utility/constants.dart';
+import 'package:food_app/utility/utility_functions.dart';
 
 class SplaseScreen extends StatefulWidget {
   const SplaseScreen({Key? key}) : super(key: key);
@@ -14,8 +15,7 @@ class _SplaseScreenState extends State<SplaseScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => GettingStarted()));
+      UtilFunction.navigateTo(context, GettingStarted());
     });
   }
 
