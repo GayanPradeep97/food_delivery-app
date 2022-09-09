@@ -5,3 +5,4 @@ const primarycolor = Color(0xffFFD200);
 const graycolor = Color(0xff838383);
 const kwhite = Colors.white;
 const kblack = Colors.black;
+const backgroundcolor = Color(0xffF6F6F6);
