@@ -18,10 +18,10 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isObscure = true;
-  final _email = TextEditingController();
-  final _password = TextEditingController();
-  final _name = TextEditingController();
-  final _phone = TextEditingController();
+  var _email = TextEditingController();
+  var _password = TextEditingController();
+  var _name = TextEditingController();
+  var _phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -145,17 +145,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool inputValidation() {
     var isValid = false;
-    if (_email.text.trim().isEmpty ||
-        _name.text.trim().isEmpty ||
-        _phone.text.trim().isEmpty ||
-        _password.text.trim().isEmpty) {
+    if (_email.text.isEmpty ||
+        _name.text.isEmpty ||
+        _phone.text.isEmpty ||
+        _password.text.isEmpty) {
       isValid = false;
     } else if (!EmailValidator.validate(_email.text)) {
       isValid = false;
-    } else if (_phone.text.length != 10) {
-      isValid = false;
+      print('email wrong');
     } else {
       isValid = true;
+      print('success');
     }
     return isValid;
   }

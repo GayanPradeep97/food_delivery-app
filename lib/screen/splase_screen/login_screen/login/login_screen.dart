@@ -124,7 +124,7 @@ class _LoginSreenState extends State<LoginSreen> {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  if (!inputValidate()) {
+                  if (inputValidate()) {
                     print('sucess');
                   } else {
                     print('eroror');
