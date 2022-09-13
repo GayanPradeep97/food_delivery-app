@@ -1,71 +1,53 @@
-//import 'dart:html';
-
-//import 'dart:ui';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:food_app/componanets/custom_text_field.dart';
-import 'package:food_app/screen/splase_screen/login_screen/login/register_screen.dart';
 import 'package:food_app/utility/app_colors.dart';
 import 'package:food_app/utility/constants.dart';
 import 'package:food_app/utility/utility_functions.dart';
 
-class LoginSreen extends StatefulWidget {
-  const LoginSreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginSreen> createState() => _LoginSreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginSreenState extends State<LoginSreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _isObscure = true;
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //backgroundColor: backgroundcolor,
         body: FadeInRight(
       child: SingleChildScrollView(
           child: Column(children: [
-        CustomTop(),
+        CustomRegisterTop(),
         Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kwhite,
-                    ),
-                    onPressed: () {},
-                    child: Image.asset(Constants.imageAsset('g_letter.png'))),
-                SizedBox(
-                  width: 15,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kwhite,
-                    ),
-                    onPressed: () {},
-                    child: Image.asset(Constants.imageAsset('fb.png')))
-              ],
-            ),
-            Text(
-              'or Login with Email',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
             Container(
               padding: EdgeInsets.all(30),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    CustomTextField(
+                      controller: _name,
+                    ),
                     Text(
                       'Email',
                       style: TextStyle(
@@ -76,6 +58,18 @@ class _LoginSreenState extends State<LoginSreen> {
                     SizedBox(height: 6),
                     CustomTextField(
                       controller: _email,
+                    ),
+                    SizedBox(height: 14),
+                    Text(
+                      'Phone Number',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    CustomTextField(
+                      controller: _phone,
                     ),
                     SizedBox(height: 14),
                     Text(
@@ -124,14 +118,14 @@ class _LoginSreenState extends State<LoginSreen> {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  if (!inputValidate()) {
-                    print('sucess');
+                  if (inputValidation()) {
+                    print('Succuss');
                   } else {
-                    print('eroror');
+                    print('errorr');
                   }
                 },
                 child: Text(
-                  'Sign In',
+                  'Register',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -143,38 +137,22 @@ class _LoginSreenState extends State<LoginSreen> {
               ),
             ),
             SizedBox(height: 8),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                  text: "Dont have an Account? ",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 14,
-                  )),
-              TextSpan(
-                text: "Register",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 14,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    UtilFunction.navigateTo(context, RegisterScreen());
-                  },
-              )
-            ]))
           ],
-        ),
+        )
       ])),
     ));
   }
 
-  bool inputValidate() {
+  bool inputValidation() {
     var isValid = false;
-    if (_email.text.trim().isEmpty || _password.text.trim().isEmpty) {
+    if (_email.text.trim().isEmpty ||
+        _name.text.trim().isEmpty ||
+        _phone.text.trim().isEmpty ||
+        _password.text.trim().isEmpty) {
       isValid = false;
     } else if (!EmailValidator.validate(_email.text)) {
+      isValid = false;
+    } else if (_phone.text.length != 10) {
       isValid = false;
     } else {
       isValid = true;
@@ -183,11 +161,10 @@ class _LoginSreenState extends State<LoginSreen> {
   }
 }
 
-class CustomTop extends StatelessWidget {
-  const CustomTop({
+class CustomRegisterTop extends StatelessWidget {
+  CustomRegisterTop({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -198,7 +175,7 @@ class CustomTop extends StatelessWidget {
             top: 59,
             left: 150,
             child: Text(
-              'Login',
+              'Register',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
@@ -209,7 +186,7 @@ class CustomTop extends StatelessWidget {
             top: 92,
             right: 116,
             child: Text(
-              'Access account',
+              'Create Account',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
