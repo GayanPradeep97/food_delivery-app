@@ -3,14 +3,19 @@
 //import 'dart:ui';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/controller/auth_controller.dart';
 import 'package:food_app/componanets/custom_text_field.dart';
 import 'package:food_app/screen/splase_screen/login_screen/login/register_screen.dart';
 import 'package:food_app/utility/app_colors.dart';
 import 'package:food_app/utility/constants.dart';
 import 'package:food_app/utility/utility_functions.dart';
+
+import '../../../../componanets/custom_dialogbox.dart';
 
 class LoginSreen extends StatefulWidget {
   const LoginSreen({Key? key}) : super(key: key);
@@ -123,11 +128,17 @@ class _LoginSreenState extends State<LoginSreen> {
               width: 300,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (inputValidate()) {
-                    print('sucess');
+                    AuthController()
+                        .signin(context, _email.text, _password.text);
                   } else {
-                    print('eroror');
+                    DialogBox().dialogbox(
+                      context,
+                      DialogType.error,
+                      'Inccorect Information',
+                      'please enter correct informaion',
+                    );
                   }
                 },
                 child: Text(

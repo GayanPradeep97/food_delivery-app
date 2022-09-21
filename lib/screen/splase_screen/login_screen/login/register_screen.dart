@@ -1,13 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:food_app/controller/auth_controller.dart';
+import 'package:food_app/componanets/custom_dialogbox.dart';
+//import 'package:flutter/src/foundation/key.dart';
+// import 'package:flutter/src/widgets/container.dart';
+// import 'package:flutter/src/widgets/framework.dart';
 import 'package:food_app/componanets/custom_text_field.dart';
 import 'package:food_app/utility/app_colors.dart';
 import 'package:food_app/utility/constants.dart';
-import 'package:food_app/utility/utility_functions.dart';
+//import 'package:food_app/utility/utility_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -18,10 +22,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isObscure = true;
-  var _email = TextEditingController();
-  var _password = TextEditingController();
-  var _name = TextEditingController();
-  var _phone = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -117,11 +123,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               width: 300,
               height: 60,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (inputValidation()) {
-                    print('Succuss');
+                    await AuthController().registeruer(context, _email.text,
+                        _password.text, _name.text, _phone.text);
                   } else {
-                    print('errorr');
+                    DialogBox().dialogbox(
+                      context,
+                      DialogType.error,
+                      'Incorrect Information',
+                      'please enter correct informaion',
+                    );
                   }
                 },
                 child: Text(
@@ -152,10 +164,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       isValid = false;
     } else if (!EmailValidator.validate(_email.text)) {
       isValid = false;
-      print('email wrong');
     } else {
       isValid = true;
-      print('success');
     }
     return isValid;
   }
