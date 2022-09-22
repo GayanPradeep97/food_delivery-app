@@ -29,6 +29,8 @@ class _LoginSreenState extends State<LoginSreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
+  bool isLoding = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,35 +126,45 @@ class _LoginSreenState extends State<LoginSreen> {
                   ]),
             ),
             SizedBox(height: 21),
-            Container(
-              width: 300,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (inputValidate()) {
-                    AuthController()
-                        .signin(context, _email.text, _password.text);
-                  } else {
-                    DialogBox().dialogbox(
-                      context,
-                      DialogType.error,
-                      'Inccorect Information',
-                      'please enter correct informaion',
-                    );
-                  }
-                },
-                child: Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
+            isLoding
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    width: 300,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (inputValidate()) {
+                          setState(() {
+                            isLoding = true;
+                          });
+
+                          AuthController()
+                              .signin(context, _email.text, _password.text);
+
+                          setState(() {
+                            isLoding = false;
+                          });
+                        } else {
+                          DialogBox().dialogbox(
+                            context,
+                            DialogType.error,
+                            'Inccorect Information',
+                            'please enter correct informaion',
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primarycolor,
+                      ),
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primarycolor,
-                ),
-              ),
-            ),
             SizedBox(height: 8),
             RichText(
                 text: TextSpan(children: [

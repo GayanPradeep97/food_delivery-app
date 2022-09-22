@@ -20,10 +20,12 @@ class AuthController {
   ) async {
     try {
       UserCredential credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .whenComplete(() {
-        DatabaseController().addUser(name, email, phonenum);
-      });
+          .createUserWithEmailAndPassword(email: email, password: password);
+      if (credential.user!.uid.isNotEmpty) {
+        DatabaseController()
+            .addUser(name, email, phonenum, credential.user!.uid);
+      }
+
       DialogBox().dialogbox(
         context,
         DialogType.success,

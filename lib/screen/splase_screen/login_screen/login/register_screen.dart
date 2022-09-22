@@ -28,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phone = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -119,35 +120,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ]),
             ),
             SizedBox(height: 21),
-            Container(
-              width: 300,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (inputValidation()) {
-                    await AuthController().registeruer(context, _email.text,
-                        _password.text, _name.text, _phone.text);
-                  } else {
-                    DialogBox().dialogbox(
-                      context,
-                      DialogType.error,
-                      'Incorrect Information',
-                      'please enter correct informaion',
-                    );
-                  }
-                },
-                child: Text(
-                  'Register',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
+            isLoding
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    width: 300,
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (inputValidation()) {
+                          setState(() {
+                            isLoding = true;
+                          });
+                          await AuthController().registeruer(
+                              context,
+                              _email.text,
+                              _password.text,
+                              _name.text,
+                              _phone.text);
+                          setState(() {
+                            isLoding = false;
+                          });
+                        } else {
+                          DialogBox().dialogbox(
+                            context,
+                            DialogType.error,
+                            'Incorrect Information',
+                            'please enter correct informaion',
+                          );
+                        }
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primarycolor,
+                      ),
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primarycolor,
-                ),
-              ),
-            ),
             SizedBox(height: 8),
           ],
         )
